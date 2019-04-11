@@ -1,29 +1,18 @@
-function Parent (name) {
-  this.animals = ['dog', 'cat', 'sheep']
-  this.name = name
-  this.log = function() {
-    console.log(this.animals)
-    console.log(this.name)
+var person = {
+  age: 23,
+  log: function() {
+    console.log(this.age)
   }
 }
-Parent.prototype.log1 = function() {
-  console.log(this.animals)
-}
-function Child (name, age) {
-  Parent.call(this, name)
-  this.age = age
-}
-Child.prototype = new Parent()
-Child.prototype.log2 = function() {
-  console.log(this.age)
+function myObject (o) {
+  function Fn () {}
+  Fn.prototype = o
+  return new Fn()
 }
 
-var c1 = new Child('king', 23)
-console.log(c1)
-c1.animals.push('duck')
-c1.log()
-
-
-var c2 = new Child('yang', 26)
-console.log(c2)
-c2.log()
+var o1 = myObject(person)
+o1.age = 34
+var o2 = myObject(person)
+o1.log()
+o2.log()
+console.log(person)
