@@ -4,6 +4,7 @@ var person = {
     console.log(this.age)
   }
 }
+// 原型继承
 function myObject (o) {
   function Fn () {}
   Fn.prototype = o
