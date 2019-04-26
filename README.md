@@ -1,2 +1,2 @@
 # kingdom
-learning notes
+复杂的事情重复做，重复的事情简单做。
