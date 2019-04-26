@@ -87,3 +87,4 @@ console.log( toy1 instanceof Factory ) // true
 console.log( toy2 instanceof Factory ) // true
 console.log( toy1.hasOwnProperty('eyes') ) // false，说明eyes属性并不是toy1实例本身的
 console.log( 'eyes' in toy1 ) // true，说明in运算符查找的属性并不局限于toy1实例本身的，还包括整条原型链上的
+
