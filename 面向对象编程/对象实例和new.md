@@ -114,7 +114,7 @@ var obj = {
   name: 'lj',
   age: 23,
   eat: function() {
-    console.log('吃东西‘)
+    console.log('吃东西')
   }
 }
 // obj是p1的模板，p1继承了obj的属性和方法
