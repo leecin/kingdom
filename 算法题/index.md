@@ -1,5 +1,6 @@
-// 冒泡排序
-// 核心思想：前一个跟后一个比较，小在前，大在后
+## 冒泡排序
+核心思想：前一个跟后一个比较，小在前，大在后
+```ts
 function bubbleSort(data) {
   console.time()
   for (var i = 0, len = data.length; i < len; i++) {
@@ -15,10 +16,11 @@ function bubbleSort(data) {
   console.log(data)
 }
 bubbleSort([1, -2, 34, 0, 1, 4, 9, -23, 0, -4])
-
-// 选择排序
-// 核心思想：拿出一个数（a）跟剩余所有数比较，如果前一个数比后一个数大，则交换两者位置，
-// 总之小数在前，大数在后，以此类推
+```
+## 选择排序
+核心思想：拿出一个数（a）跟剩余所有数比较，如果前一个数比后一个数大，则交换两者位置，
+总之小数在前，大数在后，以此类推
+```ts
 function selectSort(data) {
   console.time()
   var minIdx = 0
@@ -36,3 +38,4 @@ function selectSort(data) {
   console.log(data)
 }
 selectSort([1, -2, 34, 0, 1, 4, 9, -23, 0, -4])
+```

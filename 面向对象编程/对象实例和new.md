@@ -108,7 +108,7 @@ function Person() {
 }
 ```
 
-## Object.reate()创建实例对象
+## Object.create()创建实例对象
 ```ts
 var obj = {
   name: 'lj',
