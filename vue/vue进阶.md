@@ -70,9 +70,7 @@ module.exports = {
 另外，它也会添加到vue实例(this)当中，所以也可以这样访问：this.$style.red。不过它只是一个基于文件名和类名生成的标识符而已。
 ```css
 <style module>
-  .red {
-    color: red;
-  }
+  .red { color: red; }
 </style>
 ```
 在模板template中，我们可以通过 $style.red 取得red的class定义。
@@ -92,3 +90,39 @@ module.exports = {
   .red { color: red; }
 </style>
 ```
+在HTML结构中，这样使用
+```html
+<p :class="$style.user.red"></p>
+```
+
+## vue中的style的scoped属性
+1. scoped原理：在真实DOM结构中添加一个hash值data，在css的选择器中相应添加该自定义属性值：`<p data-v-23ew56r></p>、.example[data-v-23ew56r]`
+2. scoped属性只作用于当前组件，不会渗透到子组件中。也就是说试图在负组件中修改自组件样式是无效的
+3. 属性选择器表示：只要改DOM节点存在该属性，就会被选中：`[title]`，选中所有函数title属性的标签。
+解决作用域覆盖的问题：
+（1）给样式指定一个范围，如class或者id
+（2）混用本地和全局样式
+（3）使用深度作用选择器：`>>>`或者`/deep/`
+```ts
+// 指定一个范围
+#foo {
+  ...
+}
+
+// 混用本地和全局
+<style scoped></style>
+<style></style>
+
+// 使用深度作用选择器
+.foo >>> .bar {}
+```
+
+## mixins
+mixins，vue中解释为混入，目的是来分发 Vue 组件中的可复用功能，一个混入对象可以包含任意组件选项，这在大力提倡组件复用的现在是非常有用的，
+他有以下几个特点：
+1. 同名钩子函数将合并为一个数组，因此都将被调用
+2. 混入对象的钩子函数将在组件自身钩子之前调用
+3. 当vue内部合并发生冲突时，会优先采用组件自身的配置项
+
+
+## 玩一玩keep-alive操作

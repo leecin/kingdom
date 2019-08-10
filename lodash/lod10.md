@@ -24,6 +24,7 @@ function isObject(val) {
 var reg = /(hello)/
 
 // 非捕获性分组
+// 用法：在?:后写上匹配的模式
 var reg = /^(?:replace|split)$/
 ```
 

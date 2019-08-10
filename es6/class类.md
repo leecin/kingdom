@@ -136,3 +136,168 @@ class Person {
 }
 ```
 
+## Class表达式
+跟函数一样，类也可以采用表达式的写法，不过在使用类名时需要注意：
+1. 该类名(如下`Me`)，只能在class内部使用，外部使用会报错
+2. 如果类的内部不需要使用类名(`Me`)，则可以省略不写
+3. 用class的表达式写法，可以写出立即执行的class
+```ts
+const myClass = class Me {
+  getClassName() {
+    return Me.name
+  }
+}
+var inst = new Me()
+
+// Me只能在class内部使用
+inst.getClassName() // Me
+Me.name // Reference Error: Me is not defined
+
+// 内部不使用类名，可以省略
+const myClass = class {}
+
+// 立即执行的class表达式
+var person = new class {
+  constructor(name) {
+    this.name = name
+  }
+
+  sayName() {
+    return `hello ${this.name}`
+  }
+}('zhangsan')
+
+// 注意：person此时是实例，可不是类，类名已经省略了
+person.sayName() // zhangsan
+```
+
+## Class在使用时注意事项
+1. 类和模块内部默认是严格模式(如：`this指向undefined`)，es6已经帮我们做好了严格模式的环境
+2. 类不存在变量提升，原因：子类必须在父类之后声明，这样才能实现正常继承
+3. 类也有name的属性
+4. 类中仍然可以使用generator函数(函数前有`*`)
+5. 类方法中的`this`，默认指向类的实例
+```ts
+// foo.js
+'use strict'; // 模块中默认就是严格模式，所以这条语句可以省略不写
+
+// 类不存在变量提升
+new Person() // ReferenceError
+class Person {}
+
+// 类也有name属性
+class Person {}
+Person.name // Person
+
+// 类中可以使用generator函数
+class Person {
+  constructor(...args) {
+    this.arg = args
+  }
+  * [Symbol.iterator]() {
+    for (var arg of this.args) {
+      yield arg
+    }
+  }
+}
+// iterator类型天然部署了for...of遍历方法
+for (var x of new Person('name', 'age')) {}
+
+// this指向
+class Person {
+  constructor() {}
+  sayName(name) {
+    return name
+  }
+  printName() {
+    this.sayName('zhangsan')
+  }
+}
+var p = new Person()
+var {printName} = p
+printName() // TypeError: cannot read property 'sayName' of undefined
+```
+
+## class解决this指向
+1. 在class内部的constructor函数中绑定this
+2. 使用箭头函数(总是指向定义时所在的对象)
+3. 使用`proxy`，在获取方法时自动绑定this
+```ts
+class Person {
+  constructor() {
+    // 1. 内部绑定this
+    this.printName = this.printName.bind(this)
+
+    // 2. 使用箭头函数
+    this.printName = () => {  ... }
+  }
+}
+```
+
+## Class的静态方法
+> 类相当于实例的原型，所有类中定义的方法都会被实例继承。
+
+1. 类中的静态方法，只能类本身去调用，实例调用时会报错
+2. 类中静态方法包含的this，`默认指向类，而不是实例`
+3. 父类静态方法会被子类继承
+4. 静态方法也可以在super对象上调用
+5. 静态方法(`有static关键字`)和实例方法(`没有static关键字`)可以重名
+```ts
+class Person {
+  static getName() {}
+  static getThis() {
+    return this === Person
+  }
+}
+// 类的实例调用方法，报错
+var p = new Person()
+p.getName() // p.getName is not a function
+
+// 静态方法this指向类，而不是实例
+Person.getThis() // true
+
+// 子类继承父类静态方法
+class Xiaom extends Person {
+  static sayHello() {
+    return 'hello'
+  }
+}
+Xiaom.sayHello() // hello
+
+// 静态方法在super对象上调用
+class Foo {
+  static classMethod() {
+    return 'hello'
+  }
+}
+
+class Bar extends Foo {
+  static classMethod() {
+    return super.classMethod() + 'too'
+  }
+}
+Bar.classMethod() // hello too
+```
+
+## Class实例属性可定义在类的顶层
+```ts
+// 传统写法
+class Person {
+  constructor() {
+    this.name = 'zhangsan'
+  }
+  getName() {
+    return this.name
+  }
+}
+
+// 实例属性定义在class顶层
+// 这种写法比较直观：一眼看出这个类有哪些`实例属性`
+class Person {
+  // 这些都是实例属性，跟实例的方法位于同层级，因此不需要在前面添加`this`
+  name = 'zhangsan'
+  getName() {
+    return this.name
+  }
+}
+```

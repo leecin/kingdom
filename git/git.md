@@ -15,3 +15,7 @@ git命令行中有时你会看到这种`git clone https://github.leecin.cn/kingd
 7. git checkout branch  切换分支
 8. git checkout -b branch 创建分支
 9. git --config <key>=<value>
+10. git reset --hard HEAD^  回到上一个版本
+
+
+
