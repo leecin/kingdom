@@ -46,7 +46,6 @@ CGI（Common Gateway Interface）是http服务器与你的本地程序“交流�
 3. Pragma：no-cache
 
 
-
 ## http请求方法
 1. GET，获取资源
 2. POST，提交表单数据/下载资源
@@ -56,3 +55,14 @@ CGI（Common Gateway Interface）是http服务器与你的本地程序“交流�
 6. TRACE，测试或诊断请求
 7. HEAD，获取请求头信息
 8. CONNECT，HTTP/1.1预留做代理服务器
+
+## Axios请求
+1. get请求绑定参数，形如：`getProduct?state=1&pageNum=2`
+```ts
+axios.get('/getProduct', { params: queryParams }).then()
+```
+
+2. post请求绑定参数，形如：`{name:leejing, age:23}`
+```ts
+axios.post('/updaateProductInfo', { data: postData }).then()
+```
