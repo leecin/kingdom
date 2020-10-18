@@ -1,6 +1,6 @@
 # new运算符实现
 
-![new运算符](./images/new.jpg);
+![new运算符](/articles/js/images/new.jpg)
 
 从[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new)上，我们知道：
 
