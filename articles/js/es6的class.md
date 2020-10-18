@@ -1,6 +1,6 @@
 # 我对es6的class的理解
 
-![es6](./images/es6bg.jpg 'es6封面图')
+![es6图片](./images/es6bg.jpg 'es6封面图')
 
 es6的class是用来创建一个基于原型继承的类。class方式实现的继承本质就是es5实现继承的`语法糖`。
 

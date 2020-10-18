@@ -1,6 +1,6 @@
 # React的类组件
 
-![react](./images/react_class_component.jpg 'react class component')
+![react图片](./images/react_class_component.jpg 'react class component')
 
 react类组件有哪些特点？
 1. 有this上下文；
