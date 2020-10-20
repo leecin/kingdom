@@ -19,7 +19,7 @@
 入参为函数，返回一个函数的函数，这就是高阶函数。即高阶函数满足两个条件：
 1. 入参是函数；
 2. 返回值是函数；
-```js
+``` js
 function bar() {}
 
 function foo(fn) {
@@ -34,7 +34,7 @@ var func = foo(bar);
 
 ## 高阶组件
 HOC（High Order Component），高阶组件。顾名思义，高阶组件拥有高阶函数的特点，只不过其入参为组件不是函数。
-```js
+``` js
 function Dog(props) {
   console.log(Dog.displayName);
   this.props = props;
@@ -69,7 +69,7 @@ Animal(Dog)({/* some properties */});
 
 ### 操作props
 通过在新的组件渲染前，将新增的props添加到目标组件上，来达到操作目标组件props的目的。
-```js
+``` js
 // 高阶组件返回一个经过`处理`后的类组件
 // 小提示：class 后面的变量名可以不写，即class extends React.Component {}，我这里统一写上，免得增加理解成本
 function ppHOC(WrappedComponent) {
@@ -86,7 +86,7 @@ function ppHOC(WrappedComponent) {
 ```
 
 ### 通过ref获取组件实例
-```js
+``` js
 class Welcome extends React.Component {
   render() {
     return <div ref={this.props.getInst}>Welcome!</div>;
@@ -106,7 +106,7 @@ function ppHOC(WrappedComponent) {
 ```
 
 ## 抽象state
-```js
+``` js
 class Welcome extends React.Component {
   render() {
     return <div>Welcome!</div>;
@@ -141,17 +141,19 @@ function ppHOC(WrappedComponent) {
 
 
 ## 反向继承（Inheritance Inversion）
+反向继承体现在继承与被继承的关系上。例如，按照正常的继承方式（正向继承，我胡编乱造的哈）假如是A继承B，那反向继承就是B继承A了。那反向继承有什么好处呢？
+
 反向代理的作用：
 1. 渲染劫持
 2. 操作state
 
 ### 渲染劫持
-通过获取被包裹组件render的virtual DOM，进而来控制最终渲染的DOM结构。
-```js
+通过获取被包裹组件render的virtual DOM，通过修改vdom的结构或者数据，进而来控制最终渲染的内容。
+``` js
 function iiHOC(WrappedComponent) {
   return class II extends WrappedComponent {
     render() {
-      // 这里的super就是WrappedComponent组件原型，那么就可操纵其原型上的方法了
+      // 这里的super就是WrappedComponent组件原型，那么就可操纵其原型上的方法了，即render方法
       // 这里你想怎么操作vdom都可以，
       const vdom = super.render();
       return vdom;
@@ -161,19 +163,33 @@ function iiHOC(WrappedComponent) {
 ```
 
 ### 操作state
-由于II继承至WrappedComponent组件，因此内部的this指向当然是II了，即也可以获取到WrappedComponent实例的属性。
-```js
+由于II组件继承至WrappedComponent组件，因此内部的this指向当然是II组件实例了，即可以获取到WrappedComponent实例的属性。
+``` js
+class Welcome extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    };
+  }
+}
+
 function iiHOC(WrappedComponent) {
   return class II extends WrappedComponent {
     render() {
-      // 这里可以操作this.state获取被包裹组件是state
-      return <div>II HOC</div>;
+      // 这里可以操作this.state获取被包裹组件的state
+      return <div>WrappedComponent's count: {this.state.count}</div>;
     }
   }
 }
+export default iiHOC(Welcome);
 ```
+上面代码可以看出，借助js继承的强大威力，在高阶组件内就可以实现对被包裹组件state的操作。
+
 
 # 小结
+react的class组件，满满的this、原型和继承的概念，所以说，基础知识有多重要可见一斑了。不过好消息是，我最近这段时间也在整理并输出对应的文章，我们可以一起学习、探讨。
+
 未完待续...
 
 
