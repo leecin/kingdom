@@ -1,31 +1,54 @@
-# JavaScript的this、原型和继承
+# [JavaScript]聊聊js里的继承
+> js的继承在整个js中是相当重要的，各种开源库的源码里都能找到继承的踪影，因此必须熟练掌握！
 
-本篇文章围绕以下几个点展开描述：
-1. this是什么？怎么用？
-2. 原型及原型链是什么？他们之间有什么关系？
-3. 如何实现继承？
+## JavaScript里的六种继承方式
+- 原型链式继承
+- 构造函数式继承
+- 组合式继承（原型链+构造函数）
+- 原型式继承
+- 寄生式继承
+- 组合寄生式继承
 
-## this是什么？
+首先需要明确一点的就是，为什么会有继承这个概念？`最根本的原因就是我们不想写重复的代码`，那如何“偷懒”？继承这个概念应运而生了。接下来就一个个举例来看看，这六种继承方式都有什么特点，各自的优缺点在哪？
+
+## 原型链式继承
 ``` js
-class Welcome extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      count: 0
-    };
-  }
+// 1.定义一个Animal类，并在该类的原型上添加一个eat方法
+function Animal(color, gender) {
+  this.color = color;
+  this.gender = gender;
 }
+Animal.prototype.eat = function() {
+  console.log('eating apples');
+};
 
-function iiHOC(WrappedComponent) {
-  return class II extends WrappedComponent {
-    render() {
-      // 这里可以操作this.state获取被包裹组件的state
-      return <div>WrappedComponent's count: {this.state.count}</div>;
-    }
+// 2.如果Cat的实例想用上面的eat方法该怎么办呢？
+// 最先想到的肯定是自己定义一个eat方法，自己动手丰裕足食，但是这不是最好的办法，能不能“借用”Animal类的？那怎么“借用”？
+function Cat() {}
+
+// 3.“借用”Animal类的eat方法，本质是通过prototype这个一桥梁
+// 将Cat和Animal搭建起了联系，我(Cat)没有的，可以问好朋友(Animal)借，以达到资源共享的目的，避免资源的浪费（共享单车就是一个资源共享的好例子）
+Cat.prototype = Animal.prototype;
+/*
+  console.dir(Cat)
+  {
+    ...
+    prototype:
+      eat: f(),
+      constructor: f Animal()
+      __proto__: Object
+    __proto__: f(),
+    ...
   }
-}
-export default iiHOC(Welcome);
+*/
+
+Cat.prototype.constructor = Cat;
+
+var cat = new Cat();
+cat.eat(); // eating apples
 ```
-上面代码可以看出，有`class`的地方必定会涉及`原型`、`继承`、`原型链`等概念，我们粗略的来捋一捋上面的原型之间的关系。
+该继承的缺点是：
+1. 只能继承父类的prototype上的属性，不能继承父类实例上的属性；
+2. 每个子实例都被迫的继承父类的prototype上所有的属性；
 
-开始是`Welcome extends React.Component`，可以得出：`Welcome --> React.Component`（-->表示指向），然后`II extends WrappedComponent`，可以得出：`II --> Welcome`（WrappedComponent就是Welcome），所以整个原型链：`II --> Welcome --> React.Component`。
+

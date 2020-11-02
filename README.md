@@ -9,6 +9,9 @@
 ## JavaScript设计模式
 * [设计模式](./articles/js/设计模式.md)
 
+## Vue随笔
+* [vue数据响应原理](./articles/vue/vue数据响应原理.md)
+
 ## React随笔
 * [react类组件](./articles/react/react类组件.md)
 * [react高阶组件](./articles/react/react高阶组件.md)
