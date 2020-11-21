@@ -19,7 +19,7 @@
 - `}`
 
 ## setup中的props、context
-前提条件：必须声明props接收的参数及类型，否则获取不到props
+前提条件：必须声明props接收的参数及类型，否则获取不到props。`context包括attrs、slots、emit。`
 ``` js
 export default {
   name: 'Todolist',
